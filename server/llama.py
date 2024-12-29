@@ -23,6 +23,5 @@ payload = {
 
 print("Sending request...")
 response = ollama.chat(model=MODEL, messages=messages)
-print(f"Status code: {response.status_code}")
-print(f"Response: {response.json()}")
+print(f"Response: {response['message']['content']}")
 
