@@ -3,6 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 from IPython.display import Markdown, display
+import ollama
 import json
 
 OLLAMA_API_URL = "http://localhost:11434/api/chat"
@@ -11,7 +12,7 @@ MODEL = 'llama3.2'
 
 messages = [
     {"role": "system", "content": "You are a helpful assistant."},
-    {"role": "user", "content": "What is the capital of France?"},
+    {"role": "user", "content": "what is 2 + 2? Wrong answers only."},
 ]
 
 payload = {
@@ -21,7 +22,7 @@ payload = {
 }
 
 print("Sending request...")
-response = requests.post(OLLAMA_API_URL, headers=HEADERS, json=payload)
+response = ollama.chat(model=MODEL, messages=messages)
 print(f"Status code: {response.status_code}")
 print(f"Response: {response.json()}")
 
