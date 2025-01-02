@@ -12,7 +12,7 @@ MODEL = 'llama3.2'
 
 messages = [
     {"role": "system", "content": "You are a helpful assistant."},
-    {"role": "user", "content": "what is 2 + 2? Wrong answers only."},
+    {"role": "user", "content": "What is 2 + 2? Wrong answers only."},
 ]
 
 payload = {
