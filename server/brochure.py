@@ -7,7 +7,7 @@ import json
 from typing import List
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
-from IPython.display import Markdown, display_markdown, update_display
+from IPython.display import Markdown, display, update_display
 from openai import OpenAI
 
 # Initialize and constants
@@ -53,7 +53,7 @@ class Website:
     def get_contents(self):
         return f"Webpage Title:\n{self.title}\nWebpage Contents:\n{self.text}\n\n"
 
-
+# example of single shot prompting
 link_system_prompt = "You are provided with a list of links found on a webpage. \
 You are able to decide which of the links would be most relevant to include in a brochure about the company, \
 such as links to an About page, or a Company page, or Careers/Jobs pages.\n "
@@ -66,16 +66,6 @@ link_system_prompt += """
     ]
 }
 """
-
-def get_links_user_prompt(website):
-    user_prompt = f"Here is the list of links on the website of {website.url} - "
-    user_prompt += "please decide which of these are relevant web links for a brochure about the company, respond with the full https URL in JSON format. \
-Do not include Terms of Service, Privacy, email links.\n"
-    user_prompt += "Links (some might be relative links):\n"
-    user_prompt += "\n".join(website.links)
-    return user_prompt
-
-
 def get_links(url):
     website = Website(url)
     response = openai.chat.completions.create(
@@ -88,6 +78,16 @@ def get_links(url):
     )
     result = response.choices[0].message.content
     return json.loads(result)
+
+def get_links_user_prompt(website):
+    user_prompt = f"Here is the list of links on the website of {website.url} - "
+    user_prompt += "please decide which of these are relevant web links for a brochure about the company, respond with the full https URL in JSON format. \
+Do not include Terms of Service, Privacy, email links.\n"
+    user_prompt += "Links (some might be relative links):\n"
+    user_prompt += "\n".join(website.links)
+    return user_prompt
+
+
 
 
 def get_all_details(url):
